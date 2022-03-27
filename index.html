@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+<style>
+
+</style>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class=" my-5">
+            <div class="col-12">
+                <div class="d-flex justify-content-between my-5">
+                    <h3>Products</h3>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Cart</button>
+
+                </div>
+                <div class="products d-flex flex-wrap" id="products">
+
+
+                </div>
+                <div id="product-loading">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Cart</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class=" border-bottom p-3">
+                <div class="d-flex gap-3 mb-1">
+                    <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" width="35px" alt="">
+                    <p>Something</p>
+                </div>
+                <div class="d-flex gap-1 align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <button class="btn btn-outline-primary">-</button>
+                    </div>
+                    <input type="number" class="form-control w-25">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <button class="btn btn-outline-primary">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $('#product-loading').append( `
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+    `)
+    $.get('https://fakestoreapi.com/products/',function (products){
+        products.forEach(function (product){
+            $('#products').append(`
+                <div class="col-3 mx-3 card text-center rounded shadow product p-3 mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end">
+                            <span class="badge bg-primary my-3 ">${product.category}</span>
+                        </div>
+                        <img src="${product.image}" width="100px" alt="">
+                        <p class="card-subtitle my-3">${product.title}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="card-subtitle mb-0">$${product.price}</p>
+                            <button class="btn btn-outline-primary add-to-cart" product-id="${product.id}">Add</button>
+                        </div>
+
+                    </div>
+                </div>
+            `);
+            $('#product-loading').empty();
+
+        })
+        $('.add-to-cart').click(function (){
+            console.log($(this).attr('product-id'));
+        })
+    })
+</script>
+</body>
+</html>
